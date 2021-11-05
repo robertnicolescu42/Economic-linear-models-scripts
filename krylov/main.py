@@ -1,6 +1,8 @@
 import numpy as np
 from fractions import Fraction
 
+from numpy import polydiv
+
 
 def inv(matrix):
     return np.linalg.inv(matrix)
@@ -77,15 +79,24 @@ def krylov(matrix, y):
     print(modified_y)
 
     solutions = np.linalg.solve(new_matrix, modified_y)
-    print("solutions: ")
+    print("solutions/eigenvalues: ")
     print(solutions)
 
     proper_solutions = np.append(1, solutions)
     polynomial = np.poly1d(np.squeeze(proper_solutions))
+    print("polynomial: ")
     print(polynomial)
 
     print("polynomial solutions:")
-    print(np.roots(polynomial))
+    poly_solutions = np.roots(polynomial)
+    print(poly_solutions)
+
+    for i in range(poly_solutions.size):
+        c1 = (1, -poly_solutions[i])
+        print("iteration " + str(i + 1) + " for lambda: " + str(np.poly1d(c1)))
+        print("---------------")
+        divided, division_remainder = polydiv(polynomial, c1)
+        print(divided)
 
 
 if __name__ == '__main__':
