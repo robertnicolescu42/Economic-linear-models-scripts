@@ -91,12 +91,49 @@ def krylov(matrix, y):
     poly_solutions = np.roots(polynomial)
     print(poly_solutions)
 
+    q_list = []
     for i in range(poly_solutions.size):
         c1 = (1, -poly_solutions[i])
         print("iteration " + str(i + 1) + " for lambda: " + str(np.poly1d(c1)))
-        print("---------------")
+        print("||||||||||||||||")
         divided, division_remainder = polydiv(polynomial, c1)
+        q_list.append(divided)
         print(divided)
+
+    # print("list of q: ")
+    # for p in q_list:
+    #     for item in p:
+    #         print(round(item))
+    #         pass
+
+    transposed_new_matrix = new_matrix.transpose()
+
+    calculated_formulas = []
+    calculated_formula = np.zeros((iterations, 1))
+
+    q_list.reverse()
+
+    print("eigenvectors: ")
+    for i in range(y.size):
+        calculated_formula = np.zeros((iterations, 1))
+        for j in range(y.size):
+            vector = transposed_new_matrix[j]
+            # print("vector:", vector)
+            # print("q item: ")
+            # print(round(q_list[i][y.size - j - 1]))
+            # print("calc: ")
+            # print(np.multiply(vector, round(q_list[i][y.size - j - 1])))
+            calculated_formula = np.add(calculated_formula, np.multiply(vector, round(q_list[i][y.size - j - 1])))
+        print("q" + str(i + 1) + "= c" + str(i + 1) + "x" + str(i + 1) + " = " + str(calculated_formula[1]))
+        calculated_formulas.append(calculated_formula[1])
+
+
+    # print(calculated_formulas)
+
+    # for item in q_list:
+    #     print(round(item[i]))
+    #     print(np.multiply(vector, round(item[i])))
+    # calculated_formula = np.add(calculated_formula, np.multiply(vector, round(item[i])))
 
 
 if __name__ == '__main__':
